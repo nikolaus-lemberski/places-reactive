@@ -1,7 +1,27 @@
 spring:
   application:
     name: places-reactive
+  cloud:
+    discovery:
+      enabled: false
 
 database:
   initialization:
     sql: "create table if not exists place(id serial primary key, name varchar(255))"
+
+weather:
+  service:
+    address: http://localhost:8089
+
+---
+spring:
+  profiles: cloud
+  cloud:
+    discovery:
+      enabled: true
+    services:
+      registrationMethod: direct
+
+weather:
+  service:
+    address: //weather
