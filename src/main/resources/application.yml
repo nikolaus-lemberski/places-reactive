@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: places-reactive
+
+database:
+  initialization:
+    sql: "create table if not exists place(id serial primary key, name varchar(255))"
