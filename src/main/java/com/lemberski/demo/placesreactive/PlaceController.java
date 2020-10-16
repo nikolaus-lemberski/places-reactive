@@ -18,7 +18,7 @@ public class PlaceController {
     private static final Logger LOG = LoggerFactory.getLogger(PlaceController.class);
 
     private final PlaceRepository placeRepository;
-    private final WeatherClient weatherClient;
+    private final WeatherService weatherService;
 
     @GetMapping("/places")
     Flux<Place> places() {
@@ -27,17 +27,19 @@ public class PlaceController {
 
     @GetMapping("/places/{id}")
     Mono<Object> place(@PathVariable Long id) {
-        return placeRepository.findById(id).zipWhen(p -> weatherClient.getWeather(p.getName())).map(tuple -> new Object() {
-            @JsonUnwrapped
-            public Place getPlace() {
-                return tuple.getT1();
-            }
+        return placeRepository.findById(id)
+                .zipWhen(p -> weatherService.getWeather(p.getName()))
+                .map(tuple -> new Object() {
+                    @JsonUnwrapped
+                    public Place getPlace() {
+                        return tuple.getT1();
+                    }
 
-            @SuppressWarnings("rawtypes")
-            public Map getWeather() {
-                return tuple.getT2();
-            }
-        });
+                    @SuppressWarnings("rawtypes")
+                    public Map getWeather() {
+                        return tuple.getT2();
+                    }
+                });
     }
 
     @PostMapping("/places")
