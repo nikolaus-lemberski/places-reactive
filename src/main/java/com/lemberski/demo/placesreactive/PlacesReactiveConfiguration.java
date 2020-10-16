@@ -12,8 +12,9 @@ public class PlacesReactiveConfiguration {
 
     @Bean
     public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
-        return http.authorizeExchange()
-                .anyExchange().permitAll()
+        return http
+                .csrf().disable()
+                .authorizeExchange().anyExchange().permitAll()
                 .and().build();
     }
 
