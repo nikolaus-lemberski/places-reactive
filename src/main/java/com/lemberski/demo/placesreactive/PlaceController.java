@@ -34,4 +34,10 @@ public class PlaceController {
         return placeRepository.save(place);
     }
 
+    @DeleteMapping("/places/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    Mono<Void> delete(@PathVariable Long id) {
+        return placeRepository.deleteById(id);
+    }
+
 }
