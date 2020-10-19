@@ -37,6 +37,7 @@ public class WeatherService {
                 .create("weather");
     }
 
+    @SuppressWarnings("rawtypes")
     public Mono<Map> getWeather(String city) {
         return webClient.get()
                 .uri("/weather/{city}", city)
