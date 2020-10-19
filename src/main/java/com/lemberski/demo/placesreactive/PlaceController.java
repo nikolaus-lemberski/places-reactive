@@ -24,7 +24,7 @@ public class PlaceController {
         return placeRepository.findById(id)
                 .zipWhen(place -> weatherService.getWeather(place.getName()))
                 .map(tuple -> PlaceWeather.of(tuple.getT1(), tuple.getT2()))
-                .map(placeWeather -> ResponseEntity.ok(placeWeather))
+                .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
