@@ -22,9 +22,9 @@ public class PlaceController {
     @GetMapping("/places/{id}")
     Mono<ResponseEntity<PlaceWeather>> place(@PathVariable Long id) {
         return placeRepository.findById(id)
-                .zipWhen(p -> weatherService.getWeather(p.getName()))
+                .zipWhen(place -> weatherService.getWeather(place.getName()))
                 .map(tuple -> PlaceWeather.of(tuple.getT1(), tuple.getT2()))
-                .map(o -> ResponseEntity.ok(o))
+                .map(placeWeather -> ResponseEntity.ok(placeWeather))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
